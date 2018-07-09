@@ -36,7 +36,7 @@ apt-get install -y wget curl gnupg checkinstall gawk dialog apt-utils flex bison
 
 echo "deb [trusted=yes] https://dl.bintray.com/hermitcore/ubuntu bionic main" | tee -a /etc/apt/sources.list
 apt-get update
-apt-get install -y --allow-unauthenticated binutils-hermit gcc-hermit-bootstrap newlib-hermit
+apt-get install -y --allow-unauthenticated binutils-hermit gcc-hermit-bootstrap newlib-hermit-rs
 export PATH=/opt/hermit/bin:$PATH
 
 ./configure --target=x86_64-hermit --prefix=/opt/hermit
