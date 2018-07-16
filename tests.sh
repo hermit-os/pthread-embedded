@@ -31,17 +31,17 @@ else
 
 export DEBIAN_FRONTEND="noninteractive"
 
-apt-get -qq update
-apt-get install -y wget curl gnupg checkinstall gawk dialog apt-utils flex bison binutils texinfo gcc g++ libmpfr-dev libmpc-dev libgmp-dev libisl-dev packaging-dev build-essential libtool autotools-dev autoconf pkg-config apt-transport-https
+apt-get -qq update || exit 1
+apt-get install -y --no-install-recommends checkinstall gcc libc-dev || exit 1
 
-echo "deb [trusted=yes] https://dl.bintray.com/hermitcore/ubuntu bionic main" | tee -a /etc/apt/sources.list
-apt-get update
-apt-get install -y --allow-unauthenticated binutils-hermit gcc-hermit-bootstrap newlib-hermit-rs
+echo "deb [trusted=yes] http://dl.bintray.com/hermitcore/ubuntu bionic main" >> /etc/apt/sources.list
+apt-get update || exit 1
+apt-get install -y --allow-unauthenticated binutils-hermit gcc-hermit-bootstrap newlib-hermit-rs || exit 1
 export PATH=/opt/hermit/bin:$PATH
 
-./configure --target=x86_64-hermit --prefix=/opt/hermit
-make -j2
-checkinstall -D -y --exclude=build --pkggroup=main --maintainer=stefan@eonerc.rwth-aachen.de --pkgsource=https://hermitcore.org --pkgname=pte-hermit-rs --pkgversion=1.2.2 --conflicts=pte-hermit --pkglicense=LGPL2 make install
+./configure --target=x86_64-hermit --prefix=/opt/hermit || exit 1
+make -j2 || exit 1
+checkinstall -D -y --exclude=build --pkggroup=main --maintainer=stefan@eonerc.rwth-aachen.de --pkgsource=https://hermitcore.org --pkgname=pte-hermit-rs --pkgversion=1.2.2 --conflicts=pte-hermit --pkglicense=LGPL2 make install || exit 1
 
 mkdir -p tmp
 dpkg-deb -R pte-hermit-rs_1.2.2-1_amd64.deb tmp
