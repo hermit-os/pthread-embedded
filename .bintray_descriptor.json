@@ -1,7 +1,7 @@
 {
      "package": {
          "name": "pte-hermit",
-         "repo": "ubuntu",
+         "repo": "REPLACE_REPO",
          "subject": "hermitcore",
          "desc": "Cross-toolchain for HermitCore",
          "website_url": "https://hermitcore.org",
@@ -24,7 +24,7 @@
      [{
        "includePattern": "../(pte[^/]*deb$)", "uploadPattern": "$1",
        "matrixParams": {
-         "deb_distribution": "bionic",
+         "deb_distribution": "REPLACE_OS",
          "deb_component": "main",
          "deb_architecture": "amd64",
          "override": 1}
