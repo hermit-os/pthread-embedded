@@ -18,7 +18,7 @@ script:
   -c "cd /work; ./tests.sh ${OS_TYPE} ${OS_NAME}"
 before_deploy:
 - cd ${TRAVIS_BUILD_DIR}
-- dpkg-deb -b tmp pte-hermit-rs_1.2.2-1_amd64.deb
+- dpkg-deb -b tmp pte-hermit-rs_1.2.3-1_amd64.deb
 deploy:
   provider: bintray
   on:

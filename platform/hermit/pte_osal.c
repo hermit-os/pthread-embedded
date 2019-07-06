@@ -41,7 +41,7 @@
 #define SIGTERM 1
 #endif
 
-#if 1
+#if 0
 int kprintf(const char*, ...);
 
 #define HERMIT_DEBUG(...) kprintf(__VA_ARGS__);
