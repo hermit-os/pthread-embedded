@@ -320,7 +320,7 @@ void pte_osThreadExit(void)
 
   pThreadData->done = 1;
   pte_osSemaphorePost(pThreadData->stop_sem, 1);
-  sys_exit(0);
+  sys_thread_exit(0);
 }
 
 /*

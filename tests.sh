@@ -41,10 +41,10 @@ export PATH=/opt/hermit/bin:$PATH
 
 ./configure --target=x86_64-hermit --prefix=/opt/hermit || exit 1
 make -j2 || exit 1
-checkinstall -D -y --exclude=build --pkggroup=main --maintainer=stefan@eonerc.rwth-aachen.de --pkgsource=https://hermitcore.org --pkgname=pte-hermit-rs --pkgversion=1.2.3 --conflicts=pte-hermit --pkglicense=LGPL2 make install || exit 1
+checkinstall -D -y --exclude=build --pkggroup=main --maintainer=stefan@eonerc.rwth-aachen.de --pkgsource=https://hermitcore.org --pkgname=pte-hermit-rs --pkgversion=1.2.4 --conflicts=pte-hermit --pkglicense=LGPL2 make install || exit 1
 
 mkdir -p tmp
-dpkg-deb -R pte-hermit-rs_1.2.3-1_amd64.deb tmp
-rm -f pte-hermit-rs_1.2.3-1_amd64.deb
+dpkg-deb -R pte-hermit-rs_1.2.4-1_amd64.deb tmp
+rm -f pte-hermit-rs_1.2.4-1_amd64.deb
 
 fi
