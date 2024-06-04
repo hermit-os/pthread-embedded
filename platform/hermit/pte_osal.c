@@ -396,7 +396,7 @@ int pte_osThreadGetDefaultPriority(void)
 
 pte_osResult pte_osMutexCreate(pte_osMutexHandle *pHandle)
 {
-  if (sys_sem_init(pHandle, 1))
+  if (sys_sem_init(pHandle, 0, 1))
     return PTE_OS_NO_RESOURCES;
 
   return PTE_OS_OK;
@@ -404,7 +404,7 @@ pte_osResult pte_osMutexCreate(pte_osMutexHandle *pHandle)
 
 pte_osResult pte_osMutexDelete(pte_osMutexHandle handle)
 {
-  if (sys_sem_destroy(handle))
+  if (sys_sem_destroy(&handle))
     return PTE_OS_NO_RESOURCES;
 
   return PTE_OS_OK;
@@ -412,7 +412,7 @@ pte_osResult pte_osMutexDelete(pte_osMutexHandle handle)
 
 pte_osResult pte_osMutexLock(pte_osMutexHandle handle)
 {
-  if (sys_sem_wait(handle))
+  if (sys_sem_wait(&handle))
     return PTE_OS_NO_RESOURCES;
 
   return PTE_OS_OK;
@@ -420,7 +420,7 @@ pte_osResult pte_osMutexLock(pte_osMutexHandle handle)
 
 pte_osResult pte_osMutexTimedLock(pte_osMutexHandle handle, unsigned int timeoutMsecs)
 {
-  if (sys_sem_timedwait(handle, timeoutMsecs))
+  if (sys_sem_timedwait(&handle, timeoutMsecs))
     return PTE_OS_TIMEOUT;
 
   return PTE_OS_OK;
@@ -428,7 +428,7 @@ pte_osResult pte_osMutexTimedLock(pte_osMutexHandle handle, unsigned int timeout
 
 pte_osResult pte_osMutexUnlock(pte_osMutexHandle handle)
 {
-  if (sys_sem_post(handle))
+  if (sys_sem_post(&handle))
     return PTE_OS_NO_RESOURCES;
 
   return PTE_OS_OK;
@@ -442,7 +442,8 @@ pte_osResult pte_osMutexUnlock(pte_osMutexHandle handle)
 
 pte_osResult pte_osSemaphoreCreate(int initialValue, pte_osSemaphoreHandle *pHandle)
 {
-  if (sys_sem_init(pHandle, initialValue))
+
+  if (sys_sem_init(pHandle, 0, initialValue))
     return PTE_OS_NO_RESOURCES;
 
   return PTE_OS_OK;
@@ -450,7 +451,7 @@ pte_osResult pte_osSemaphoreCreate(int initialValue, pte_osSemaphoreHandle *pHan
 
 pte_osResult pte_osSemaphoreDelete(pte_osSemaphoreHandle handle)
 {
-  if (sys_sem_destroy(handle))
+  if (sys_sem_destroy(&handle))
     return PTE_OS_NO_RESOURCES;
 
   return PTE_OS_OK;
@@ -461,22 +462,21 @@ pte_osResult pte_osSemaphorePost(pte_osSemaphoreHandle handle, int count)
   int i;
 
   for (i=0; i<count; i++) {
-    if (sys_sem_post(handle)) {
+    if (sys_sem_post(&handle)) {
        return PTE_OS_NO_RESOURCES;
     }
   }
-
   return PTE_OS_OK;
 }
 
 pte_osResult pte_osSemaphorePend(pte_osSemaphoreHandle handle, unsigned int *pTimeoutMsecs)
 {
   if (pTimeoutMsecs && *pTimeoutMsecs) {
-    if (sys_sem_timedwait(handle, *pTimeoutMsecs)) {
+    if (sys_sem_timedwait(&handle, *pTimeoutMsecs)) {
       return PTE_OS_TIMEOUT;
     }
   } else {
-    if (sys_sem_wait(handle)) {
+    if (sys_sem_wait(&handle)) {
       return PTE_OS_NO_RESOURCES;
     }
   }
@@ -495,7 +495,7 @@ pte_osResult pte_osSemaphoreCancellablePend(pte_osSemaphoreHandle semHandle, uns
 
   if (pTimeout)
     msec = *pTimeout;
-  ret = sys_sem_timedwait(semHandle, msec);
+  ret = sys_sem_timedwait(&semHandle, msec);
 
   if (ret == -ETIME)
     return PTE_OS_TIMEOUT;

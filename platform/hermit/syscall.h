@@ -58,8 +58,7 @@ extern "C" {
 struct _HermitRecursiveMutex;
 typedef struct _HermitRecursiveMutex HermitRecursiveMutex;
 
-struct _HermitSemaphore;
-typedef struct _HermitSemaphore HermitSemaphore;
+typedef void* HermitSemaphore;
 
 struct _HermitSpinlock;
 typedef struct _HermitSpinlock HermitSpinlock;
@@ -83,7 +82,6 @@ typedef void (*signal_handler_t)(int);
 #define NORMAL_PRIO	2
 #define LOW_PRIO	1
 #define IDLE_PRIO	0
-
 
 /*
  * HermitCore is a libOS.
@@ -114,11 +112,11 @@ int sys_recmutex_init(HermitRecursiveMutex** recmutex);
 int sys_recmutex_destroy(HermitRecursiveMutex* recmutex);
 int sys_recmutex_lock(HermitRecursiveMutex* recmutex);
 int sys_recmutex_unlock(HermitRecursiveMutex* recmutex);
-int sys_sem_init(HermitSemaphore** sem, unsigned int value);
+int sys_sem_init(HermitSemaphore* sem, unsigned int pshared, unsigned int value);
 int sys_sem_destroy(HermitSemaphore* sem);
 int sys_sem_post(HermitSemaphore* sem);
 int sys_sem_trywait(HermitSemaphore* sem);
-int sys_sem_timedwait(HermitSemaphore *sem, unsigned int ms);
+int sys_sem_timedwait(HermitSemaphore* sem, unsigned int ms);
 #define sys_sem_wait(sem)	sys_sem_timedwait(sem, 0)
 int sys_sem_timedwait(HermitSemaphore* sem, unsigned int ms);
 int sys_spinlock_init(HermitSpinlock** lock);
