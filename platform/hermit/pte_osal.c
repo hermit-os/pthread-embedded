@@ -213,19 +213,6 @@ pte_osResult pte_osInit(void)
   return result;
 }
 
-/***************************************************************************
- *
- * Signal handling
- *
- **************************************************************************/
-
-int pte_kill(pte_osThreadHandle threadId, int sig)
-{
-  hermitThreadData* pThreadData = (hermitThreadData*) threadId;
-
-  return _kill_r(__getreent(), pThreadData->id, sig);
-}
-
 /****************************************************************************
  *
  * Threads
@@ -300,9 +287,6 @@ pte_osResult pte_osThreadDelete(pte_osThreadHandle handle)
 
 pte_osResult pte_osThreadExitAndDelete(pte_osThreadHandle handle)
 {
-  hermitThreadData *pThreadData = (hermitThreadData*) handle;
-
-  pte_kill(pThreadData, SIGTERM);
   pte_osThreadDelete(handle);
 
   return PTE_OS_OK;
