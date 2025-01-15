@@ -56,9 +56,6 @@ int kprintf(const char*, ...);
 /* defined in crt0.o */
 uint64_t get_ticks(void);
 
-/* newlibs' helper function to initialize signal handling */
-int _init_signal_r(struct _reent*);
-
 /* TLS key used to access hermitThreadData struct for reach thread. */
 static unsigned int threadDataKey;
 
@@ -139,9 +136,6 @@ static void hermitStubThreadEntry(void *argv)
   __myreent_ptr = pThreadData->myreent;
   _REENT_INIT_PTR(pThreadData->myreent);
 
-  /* initialize basic signal handling */
-  _init_signal_r(pThreadData->myreent);
-
   pThreadData->id = gettid();
   globalHandle = (void*) pThreadData;
 
@@ -219,19 +213,6 @@ pte_osResult pte_osInit(void)
   return result;
 }
 
-/***************************************************************************
- *
- * Signal handling
- *
- **************************************************************************/
-
-int pte_kill(pte_osThreadHandle threadId, int sig)
-{
-  hermitThreadData* pThreadData = (hermitThreadData*) threadId;
-
-  return _kill_r(__getreent(), pThreadData->id, sig);
-}
-
 /****************************************************************************
  *
  * Threads
@@ -306,9 +287,6 @@ pte_osResult pte_osThreadDelete(pte_osThreadHandle handle)
 
 pte_osResult pte_osThreadExitAndDelete(pte_osThreadHandle handle)
 {
-  hermitThreadData *pThreadData = (hermitThreadData*) handle;
-
-  pte_kill(pThreadData, SIGTERM);
   pte_osThreadDelete(handle);
 
   return PTE_OS_OK;

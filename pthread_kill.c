@@ -47,10 +47,6 @@
 #include "pthread.h"
 #include "implement.h"
 
-#ifdef __hermit__
-int pte_kill(pte_osThreadHandle threadId, int sig);
-#endif
-
 int
 pthread_kill (pthread_t thread, int sig)
 /*
@@ -98,9 +94,6 @@ pthread_kill (pthread_t thread, int sig)
 
   pte_osMutexUnlock(pte_thread_reuse_lock);
 
-#ifdef __hermit__
-  result = pte_kill(tp->threadId, sig);
-#else
   if (0 == result && 0 != sig)
     {
       /*
@@ -108,7 +101,6 @@ pthread_kill (pthread_t thread, int sig)
        */
       result = EINVAL;
     }
-#endif
 
   return result;
 
