@@ -1001,6 +1001,14 @@ extern "C" {
     {
         return ((size_t) l.p) == ((size_t) r.p);
     }
+
+#if __cpp_lib_three_way_comparison
+    /* Operator to be compatible to libstd++ */
+    inline std::strong_ordering operator<=>(const pte_handle_t &lhs,
+                                            const pte_handle_t &rhs) noexcept {
+        return ((size_t)lhs.p) <=> ((size_t)rhs.p);
+    }
+#endif // three_way_comparison
 #endif
 
 
