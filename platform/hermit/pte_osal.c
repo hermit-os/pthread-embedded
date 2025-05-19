@@ -462,6 +462,13 @@ pte_osResult pte_osSemaphorePend(pte_osSemaphoreHandle handle, unsigned int *pTi
   return PTE_OS_OK;
 }
 
+pte_osResult pte_osThreadCancel(pte_osThreadHandle threadHandle) {
+  return PTE_OS_GENERAL_FAILURE;
+}
+
+pte_osResult pte_osThreadCheckCancel(pte_osThreadHandle threadHandle) {
+  return PTE_OS_OK;
+}
 
 /*
  * Pend on a semaphore- and allow the pend to be cancelled.
