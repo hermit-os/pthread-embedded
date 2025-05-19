@@ -723,13 +723,11 @@ extern "C" {
     int  pthread_once (pthread_once_t * once_control,
                        void (*init_routine) (void));
 
-#if PTE_LEVEL >= PTE_LEVEL_MAX
     pte_cleanup_t *  pte_pop_cleanup (int execute);
 
     void  pte_push_cleanup (pte_cleanup_t * cleanup,
                             void (*routine) (void *),
                             void *arg);
-#endif /* PTE_LEVEL >= PTE_LEVEL_MAX */
 
     /*
      * Thread Specific Data Functions
