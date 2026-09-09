@@ -60,12 +60,6 @@ typedef struct _HermitRecursiveMutex HermitRecursiveMutex;
 
 typedef void* HermitSemaphore;
 
-struct _HermitSpinlock;
-typedef struct _HermitSpinlock HermitSpinlock;
-
-struct _HermitSpinlockIrqSave;
-typedef struct _HermitSpinlockIrqSave HermitSpinlockIrqSave;
-
 struct _HermitTimespec;
 typedef struct _HermitTimespec HermitTimespec;
 
@@ -119,14 +113,6 @@ int sys_sem_trywait(HermitSemaphore* sem);
 int sys_sem_timedwait(HermitSemaphore* sem, unsigned int ms);
 #define sys_sem_wait(sem)	sys_sem_timedwait(sem, 0)
 int sys_sem_timedwait(HermitSemaphore* sem, unsigned int ms);
-int sys_spinlock_init(HermitSpinlock** lock);
-int sys_spinlock_destroy(HermitSpinlock* lock);
-int sys_spinlock_lock(HermitSpinlock* lock);
-int sys_spinlock_unlock(HermitSpinlock* lock);
-int sys_spinlock_irqsave_init(HermitSpinlockIrqSave** lock);
-int sys_spinlock_irqsave_destroy(HermitSpinlockIrqSave* lock);
-int sys_spinlock_irqsave_lock(HermitSpinlockIrqSave* lock);
-int sys_spinlock_irqsave_unlock(HermitSpinlockIrqSave* lock);
 int sys_spawn(tid_t* id, entry_point_t func, void* arg, unsigned char prio, unsigned int core_id);
 int sys_clock_getres(unsigned long clock_id, HermitTimespec* res);
 int sys_clock_gettime(unsigned long clock_id, HermitTimespec* tp);
